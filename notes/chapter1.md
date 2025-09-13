@@ -1,4 +1,4 @@
-## chapter 1 the name of the game
+## Chapter 1 The Name of the Game
 
 
 ### 1 Terminology & Notation 

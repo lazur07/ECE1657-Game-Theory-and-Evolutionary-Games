@@ -1,7 +1,7 @@
 ## Chapter 1 The Name of the Game
 
 
-### 1 Terminology & Notation 
+### 1.1 Terminology & Notation 
 
 - **Game** $\mathcal{G}$
 
@@ -19,38 +19,77 @@
 - **Cost function** $J_i: \Omega \to \mathbb{R}$ depends on all players' actions: $$J_i(\mathbf{u}) = J_i(\mathbf{u}_i, \mathbf{u}_{-i})$$
 
 
-### 2 Game Forms
+### 1.2 Game Forms
 The **extensive form** shows structure; the **normal form** summarizes into cost mappings.
 
-#### 2.1 Extensive Form
+#### 1.2.1 Extensive Form
 Tree graph with nodes (game states) and edges (possible moves).
 
-![Extensive Form Game Tree](../images/extensive-form.png)
+![Extensive Form](../images/extensive-form.png)
 
 - Terminal nodes with cost function
 - Non-terminal nodes partitioned by player:
     - $\mathscr{S}^0$: chance nodes (Nature)
     - $\mathscr{S}^i$: nodes where player $i \in \mathcal{N}$ moves
 
+#### 1.2.2 Normal Form
 
+Condensed table with strategy spaces and cost functions.
 
-#### 2.2 Normal Form
-Condensed Table with strategy spaces and cost functions.
+A game is $\mathcal{G}=(\mathcal{N},\Omega_i,J_i)$ where:
+- $\mathcal{N}=\{1,\ldots,n\}$ is the set of players  
+- $\Omega_i$ is player $i$'s **pure action set**, and $\Omega=\Omega_1\times\Omega_2$ the **action profile** space  
+- $J_i:\Omega\to\mathbb{R}$ is player $i$'s **cost** 
 
-![Normal Form Game Tree](../images/normal-form.png)
+![Normal Form](../images/normal-form.png)
 
-In this case, 
+Confused? One example is the Matching Pennies game $\mathcal{G}(\mathcal{N}, \Omega_i, J)$.
 
-- Strategy spaces: $$\begin{aligned}\Omega_1 = \Omega_2 &= \{H,T\}, \\ \Omega = \Omega_1 \times \Omega_2&= \{(H,H), (H,T), (T,H), (T,T)\}\end{aligned}$$
+1. **The player set** is $\mathcal{N}=\{1,2\}$ with players $P_1, P_2$.
 
-- Cost functions:$$J_1(\mathbf{u}_1, \mathbf{u}_2) = \mathbf{u}_1^{\!\top}A\mathbf{u}_2, \quad J_2(\mathbf{u}_1, \mathbf{u}_2) = \mathbf{u}_1^{\!\top}B\mathbf{u}_2$$
-    where 
-    - $\mathbf{u}_i = (1, 0)^{\top}$ represents playing $H$
-    - $\mathbf{u}_i = (0, 1)^{\top}$ represents playing $T$
+2. **Action sets**:
+   - $P_1$: $\Omega_1=\{H,T\}$ with $u_1\in\Omega_1$ (i.e., $u_1=H$ or $u_1=T$)  
+   - $P_2$: $\Omega_2=\{H,T\}$ with $u_2\in\Omega_2$ (i.e., $u_2=H$ or $u_2=T$)
 
-### 3. Game Features
+   The resulting pure action pairs:
+   $$\Omega=\Omega_1\times\Omega_2=\{(H,H),(H,T),(T,H),(T,T)\}$$
 
-#### 3.1 Competitive Nature
+3. **Strategy space**:
+   
+   To make calculations easier, we represent each pure action as a one-hot vector.
+   
+   For player $i$:
+   $$H \;\mapsto\; \mathbf{e}_{i1} = \begin{bmatrix}1 \\ 0\end{bmatrix}, \qquad T \;\mapsto\; \mathbf{e}_{i2} = \begin{bmatrix}0 \\ 1\end{bmatrix}$$
+
+   and the chosen action is represented by $\mathbf{u}_i\in\{\mathbf{e}_{i1},\mathbf{e}_{i2}\}$.
+
+   In this case, $P_1$ has $\mathbf{u}_1\in\left\{\begin{bmatrix}1 \\ 0\end{bmatrix}, \begin{bmatrix}0 \\ 1\end{bmatrix}\right\}$ and $P_2$ has $\mathbf{u}_2\in\left\{\begin{bmatrix}1 \\ 0\end{bmatrix}, \begin{bmatrix}0 \\ 1\end{bmatrix}\right\}$.
+   
+   A strategy profile $\mathbf{u}$ is a tuple containing each player's chosen strategy:
+   
+   If $P_1$ chooses $H$ and $P_2$ chooses $T$:
+   $$\mathbf{u}=(\mathbf{u}_1,\mathbf{u}_2)=\left(\begin{bmatrix}1 \\ 0\end{bmatrix},\begin{bmatrix}0 \\ 1\end{bmatrix}\right)$$
+
+4. **Costs**:
+
+   $P_1$'s cost matrix: $A=\begin{bmatrix}-1&1\\[2pt]1&-1\end{bmatrix}$  
+   $P_2$'s cost matrix: $B=-A$
+
+   $P_i$'s cost function maps a profile to $\mathbb{R}$. In matrix form:
+   $$J_1(\mathbf{u}_1,\mathbf{u}_2)=\mathbf{u}_1^{\!\top}A\,\mathbf{u}_2,\qquad J_2(\mathbf{u}_1,\mathbf{u}_2)=-J_1(\mathbf{u}_1,\mathbf{u}_2)$$
+   
+   For the concrete profile above ($H$ for $P_1$, $T$ for $P_2$):
+   $$\begin{aligned}
+   J_1(\mathbf{u}_1,\mathbf{u}_2)
+   &=\mathbf{u}_1^{\!\top}A\,\mathbf{u}_2\\
+   &=[1,0]\,
+   \begin{bmatrix}-1&1\\[2pt]1&-1\end{bmatrix}
+   \,\begin{bmatrix}0 \\ 1\end{bmatrix}\\
+   &=1
+   \end{aligned}$$
+### 1.3 Game Features
+
+#### 1.3.1 Competitive Nature
 
 - **Cooperative Games**: Players cooperate with identical costs
 
@@ -59,7 +98,7 @@ In this case,
     - **Constant-Sum Games**: Payoffs sum to fixed value (e.g., Rock-Paper-Scissors)  
     - **Conflicting Interest Games**: Opposing interests with compromise potential (e.g., Prisoner's Dilemma)
 
-#### 3.2 Repetition
+#### 1.3.2 Repetition
 
 - **One-Shot Games**: Single round only
 
@@ -69,7 +108,7 @@ In this case,
 
 - **Dynamic Games**: Different games across rounds. (e.g. Stochastic games, Markov games)
 
-#### 3.3 Knowledge Information
+#### 1.3.3 Knowledge Information
 
 Knowledge determines strategy space: more information enables better decisions.
 
@@ -80,13 +119,13 @@ Knowledge determines strategy space: more information enables better decisions.
 | **Perfect** | All past actions observable |
 | **Imperfect** | Past actions partially observable |
 
-### 4. Solution Concepts
+### 1.4 Solution Concepts
 
-#### 4.1 Minimax Solution
+#### 1.4.1 Minimax Solution
 
 Minimize maximum expected loss: $\min_{\mathbf{u}_i} \max_{\mathbf{u}_{-i}} J_i(\mathbf{u})$
 
-#### 4.2 Best Response (BR)
+#### 1.4.2 Best Response (BR)
 Choose strategy minimizing cost given opponents' strategies.
 
 - **Limitations**:
@@ -95,12 +134,12 @@ Choose strategy minimizing cost given opponents' strategies.
 
 - **Best Response Dynamics**: update rule where next-round strategies are best responses to current strategies.
 
-#### 4.3 Nash Equilibrium
+#### 1.4.3 Nash Equilibrium
 
 No player benefits from unilateral deviation: 
 $$J_i(\mathbf{u}^*_i, \mathbf{u}^*_{-i}) \leq J_i(\mathbf{u}_i, \mathbf{u}^*_{-i}) \quad \forall i, \forall \mathbf{u}_i$$
 
-#### 4.4 Pareto Optimality
+#### 1.4.4 Pareto Optimality
 
 No player improves without harming another.
 

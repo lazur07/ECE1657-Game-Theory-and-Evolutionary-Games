@@ -41,9 +41,10 @@ A game is $\mathcal{G}=(\mathcal{N},\Omega_i,J_i)$ where:
 - $\Omega_i$ is player $i$'s **pure action set**, and $\Omega=\Omega_1\times\Omega_2$ the **action profile** space  
 - $J_i:\Omega\to\mathbb{R}$ is player $i$'s **cost** 
 
-![Normal Form](../images/normal-form.png)
 
 Confused? One example is the Matching Pennies game $\mathcal{G}(\mathcal{N}, \Omega_i, J)$.
+
+![Normal Form](../images/normal-form.png)
 
 1. **The player set** is $\mathcal{N}=\{1,2\}$ with players $P_1, P_2$.
 
@@ -87,6 +88,7 @@ Confused? One example is the Matching Pennies game $\mathcal{G}(\mathcal{N}, \Om
    \,\begin{bmatrix}0 \\ 1\end{bmatrix}\\
    &=1
    \end{aligned}$$
+
 ### 1.3 Game Features
 
 #### 1.3.1 Competitive Nature

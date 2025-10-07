@@ -1,629 +1,447 @@
-## Chapter 2 Matrix Games: 2-player Zero-Sum
+## Chapter 2: 2-Player Zero-Sum Finite/Matrix Games
 
-## 2 player Zero-Sum Finite/Matrix Games 
+### 2.1 Zero-Sum + Pure Strategy + Finite Actions
 
-### Ch 2.1:
+#### 2.1.1 Setup
+First, let's review the concept of **Finite Actions & Pure Strategy**
 
-#### definition, security strategies, minmax solution
+- **Finite actions**: Allows matrix representation of the cost, and the size of the strategy space is:
+  $$|\Omega_i| = m_i < \infty, \qquad A \in \mathbb{R}^{m_1 \times m_2}$$
 
-◦ examples
+- **Pure strategy**: Deterministic action. The player picks one specific action with certainty without a probability distribution. 
+  $$\mathbf{u}_i \in \Omega_i$$
+  
+  For player $i$, its pure strategy $j$ is encoded as the **standard basis vector**:
+  $$\mathbf{u}_i = \mathbf{e}_{ij} = \begin{bmatrix} 0 \\ \vdots \\ 1 \ \text{(j-th)} \\ \vdots \\ 0 \end{bmatrix} \in \mathbb{R}^{m_i}$$
 
-#### no regret concept and saddle-point equilibrium
+Given the two concepts, we are introducing a new definition:
 
-### Ch 2.2
+- **Zero-sum game**: 
 
-#### mixed-strategy extension
+  $$J_1(\mathbf{u}_1, \mathbf{u}_2) + J_2(\mathbf{u}_1, \mathbf{u}_2) = 0, \qquad \forall\,(\mathbf{u}_1, \mathbf{u}_2) \in \Omega_1 \times \Omega_2$$
+  
+  Therefore, the costs are negatives of each other: 
+  $$J = J_1 = -J_2$$
 
-#### mixed-strategy security strategies
+  Given **finite actions**, we can express the cost function as 
+  $$J(\mathbf{u}_1, \mathbf{u}_2) = \mathbf{u}_1^\top A\,\mathbf{u}_2$$
 
-#### mixed-strategy saddle-point equilibrium
+  where $P_1$'s cost matrix $A \in \mathbb{R}^{m_1 \times m_2}$, and $P_2$'s cost matrix $B=-A$
 
-### Ch 2.3
+To sum up, we can specify the normal form under the zero-sum condition as
 
-◦ Minmax Theorem 
- You Read Th 2.10, Cor. 2.11
+$$\mathcal{G}(\mathcal{N}, \Omega_i, J_i) \to \mathcal{G}(\mathcal{N}, \Omega_i, J)$$
 
-### Ch 2.4
-Computing mixed saddle-point eq. solution 
+- **Players**  $\mathcal{N}=\{1,2\}$ (players $P_1, P_2$).
 
-#### Dominated strategies (You Read Sec 2.4.1)
+- **Action sets (finite)**  $|\Omega_i|=m_i<\infty$.
 
-#### Graphical method in 2x2 games
-
-Example: Matching Pennies game
-
-
-
-
-### Pure Strategy
-
-$$
-\mathcal{G}(\mathcal{N}, \Omega_i, J_i)
-$$
-
-- $\mathcal{N} = \{1,2\}$: 2 players
-- $\Omega_i$: action set for player $i \in \mathcal{N}$
-  - action of player 1: $\vec{u}_1 \in \Omega_1$
-  - action of player 2: $\vec{u}_2 \in \Omega_2$
-- $J_i$: cost function for player $i \in \mathcal{N}$
-
-
-  - cost of player 1: $J_1(\vec{u}_1, \vec{u}_2)$
-  - cost of player 2: $J_2(\vec{u}_1, \vec{u}_2)$
-
-
-### Two-Player Zero-Sum Game
-
-$$
-J_1(\vec{u}_1, \vec{u}_2) + J_2(\vec{u}_1, \vec{u}_2) = 0, 
-\quad \forall$$
-
-the set of joint actions 
-$$(\vec{u}_1,\vec{u}_2) \in \Omega_1 \times \Omega_2
-$$
-
-- P1: $\min J_1, \max J_2$
-- P2: $\min J_2, \max J_1$
-- $J_1 = -J_2 = J$
-  → we can simplify game as $\mathcal{G}(\mathcal{N}, \Omega_i, J)$
-
-
-### Assume $m$ rounds finite actions (pure strategies to choose from)
-
-- P1: $m_1 = m \Rightarrow \Omega_1 = A_1, (\vec{u}_1 = e_{1j}), j \in M_1 := \{1,\dots,m\}$
-- P2: $m_2 = n \Rightarrow \Omega_2 = A_2, (\vec{u}_2 = e_{2k}), k \in M_2 := \{1,\dots,n\}$
-
-$$
-e_{1j} \in \mathbb{R}^m \quad \text{is the \(j\)-th unit vector}, \quad
-e_{2k} \in \mathbb{R}^n \quad \text{is the \(k\)-th unit vector}.
-$$
-
-- $a_{jk}$ denotes the outcome if P1 chooses $j$-th action and P2 chooses $k$-th action:
-
+  Define the index set of actions for player $i$ as  
   $$
-  J(\vec{u}_1, \vec{u}_2) = J(e_{1j}, e_{2k}) = a_{jk}
+  M_i = \{1,2,\dots,m_i\}.
+  $$
+  If we encode pure actions as one-hot vectors indexed by $M_i$, then
+  $$
+  \Omega_i=\{\mathbf e_{i1},\dots,\mathbf e_{i m_i}\}\subset\mathbb R^{m_i},
+  \\
+  \mathbf e_{ij}=\text{the $j$-th standard basis vector in }\mathbb R^{m_i}.
   $$
 
-Thus → $(m \times n)$ matrix:
-
-$$
-A_{m \times n} = [a_{jk}]_{m \times n}
-$$
-
-
-### Benefit of this definition
-
-For P1, we can write its cost:
-
-$$
-J_1(\vec{u}_1, \vec{u}_2) = J_1(e_{1j}, e_{2k}) = a_{jk} = e_{1j}^T A_{m \times n} e_{2k}
-$$
-
-Thus
-
-$$
-J_1(\vec{u}_1, \vec{u}_2) = \vec{u}_1^T A \vec{u}_2, 
-\quad
-J_2(\vec{u}_1, \vec{u}_2) = \vec{u}_1^T B \vec{u}_2,
-\quad A = -B
-$$
-
-⭐ Hence we can --identify $\mathcal{G}$ using a single cost matrix $A$:--
-
-$$
-\mathcal{G}(\mathcal{N}, \Omega_i, J) \;\Rightarrow\; \mathcal{G}(\mathcal{N}, \Omega_i, A).
-$$
-
-
-
-
-
-### Example: Matching Pennies
-
-* If P1 chooses $H$ ($\vec{e}_{11}$)
-  and P2 chooses $H$ ($\vec{e}_{21}$)
-
-* Notation: $\vec{e}_{ij}$ = action $j$ of player $i$.
-
-
-Payoff matrices:
-
-$$
-A = \begin{bmatrix}
--1 & 1 \\
-1 & -1
-\end{bmatrix}, 
-\qquad 
-B = \begin{bmatrix}
-1 & -1 \\
--1 & 1
-\end{bmatrix}
-$$
-
-
-P1’s cost function:
-
-$$
-J_1(\vec{e}_{11}, \vec{e}_{21}) 
-= \vec{e}_{11}^T A \vec{e}_{21}
-= [1 \; 0]
-\begin{bmatrix}
--1 & 1 \\
-1 & -1
-\end{bmatrix}
-\begin{bmatrix}
-1 \\ 0
-\end{bmatrix}
-= [-1 \; 1]
-\begin{bmatrix}
-1 \\ 0
-\end{bmatrix}
-= -1
-$$
-
-
-*What a coincidence:*
-
-$$
-J(\vec{e}_{1j}, \vec{e}_{2k}) = a_{jk}
-$$
-
-
-
-
-### Definition 2.1 — Security Strategy
-
-* **P1 chooses row–min**
-* **P2 chooses col–max**
-
-
-#### Player 1 (minimizer)
-
-* Given cost matrix $A = [a_{jk}] \in \mathbb{R}^{m \times n}$
-* P1’s security strategy (worst case): chooses row $j^*$ minimizing row–max cost
-
-$$
-\max_k a_{jk} = \max_{k} a_{jk}, \quad j=1,\dots,m
-$$
-
-$$
-J_U := \min_{j \in M_1} \max_{k \in M_2} a_{jk}, \quad 
-j^* \in \arg\min_{j \in M_1} \max_{k \in M_2} a_{jk}
-$$
-
-
-#### Player 2 (maximizer)
-
-* Given P1’s cost matrix $A = [a_{jk}] \in \mathbb{R}^{m \times n}$
-* P2’s security strategy (worst case): chooses column $k^*$ maximizing col–min gain
-
-$$
-\min_j a_{jk} = \min_{j} a_{jk}, \quad k=1,\dots,n
-$$
-
-$$
-J_L := \max_{k \in M_2} \min_{j \in M_1} a_{jk}, \quad 
-k^* \in \arg\max_{k \in M_2} \min_{j \in M_1} a_{jk}
-$$
-
-
-### Consequence
-
-* $J_U, J_L$ will be a scalar on the matrix $A$.
-* If the pair $(j^*, k^*) \in M_1 \times M_2$, then it is a **saddle-point equilibrium**.
-* The value of the game is $J = J_U = J_L$.
-
-
-### Properties
-
-* Security strategies are **conservative** → do not guarantee equilibrium.
-* Equilibrium requires **no regret**.
-* In any matrix game, there always exists at least a security strategy for each player $i \in \mathcal{N}$.
-* In pure strategy:
-
+- **Costs (matrix form)**:  
+  For pure actions $(j,k)$, where 
+  - player $P_1$ chooses the $j$-th action ($j \in M_1$) 
+  - player $P_2$ chooses the $k$-th action ($k \in M_2$)
+  
+  We can express the cost function as
   $$
-  (\text{pure}) \;\; \max\min \;\; \le \;\; (\text{pure}) \;\; \min\max
+  \begin{aligned}
+  J(\mathbf u_1,\mathbf u_2)
+  &= \mathbf u_1^{\!\top} A\,\mathbf u_2\\
+  &= (\mathbf e_{1j})^\top A\,\mathbf e_{2k}\\
+  &= [A]_{j,k}\\
+  &= a_{jk}
+  \end{aligned}
   $$
+  
+  This setting is also called a **matrix game**, since finite actions allow the game to be represented by a payoff matrix.
 
-  i.e.
 
+#### 2.1.2 Definition
+
+After setting up the game, we define three solution concepts for 2PZSG. This is how we “play” the game.
+
+1. security strategy
+    - $P_1$ (row player, minimizer) chooses a **security strategy** that minimizes his worst-case loss:
+      $$
+      j^* \in \arg\min_{j\in M_1}\ \max_{k\in M_2} a_{jk},
+      $$
+      and $P_1$'s security level (upper value, ceiling) is
+
+      $$J_U := \min_{j\in M_1}\max_{k\in M_2} a_{jk}
+      = \min_{j\in M_1}\max_{k\in M_2} \mathbf e_{1j}^{\!\top}A\,\mathbf e_{2k}
+      $$
+    - $P_2$ (column player, maximizer) chooses a **security strategy** that maximizes his worst-case gain:
+      $$
+      k^* \in \arg\max_{k\in M_2}\ \min_{j\in M_1} a_{jk},
+      $$
+      and $P_2$'s security level (lower value, floor) is
+      $$
+      J_L := \max_{k\in M_2}\min_{j\in M_1} a_{jk}
+      = \max_{k\in M_2}\min_{j\in M_1} \mathbf e_{1j}^{\!\top}A\,\mathbf e_{2k}
+      $$
+    - **Property:** In any matrix game, $J_L \le J_U$. 
+
+2. minimax solution
+
+    We’ll call $(j^*,k^*)\in M_1\times M_2$ a **minimax (security) pair** if each component is a security strategy as above.  
+
+    ⚠️ In pure strategies this pair **need not be an equilibrium**: after seeing the other’s move, a player may have a better response (ex-post regret). 
+
+    This happens whenever $J_L<J_U$ 
+
+3. saddle point solution
+
+    A pair $(j^*,k^*)$ is a **saddle point** iff
+    $$
+    a_{j^*k}\ \le\ a_{j^*k^*}\ \le\ a_{jk^*}\quad \forall j\in M_1,\ \forall k\in M_2.
+    $$
+    Then the **saddle-point value** is
+    $$
+    J^* = a_{j^*k^*}
+    $$
+    This entry is simultaneously **min in its column** (no regret for $P_1$) and **max in its row** (no regret for $P_2$). 
+
+
+#### 2.1.3 Example
+One example of 2PZSG is Matching Pennies, where each player has two strategies $\Omega_i=\{H,T\}$, and if both choose the same action, $P_2$ gives $P_1$ \$1, and $P_1$ gives $P_2$ \$1 otherwise.
+
+Summarizing the rules into the strategy space $\Omega=\Omega_1 \times\Omega_2$: $$M = \begin{bmatrix} (-1,1) & (1,-1) \\ (1,-1) & (-1,1) \end{bmatrix}$$ and we use $P_1$'s cost matrix to analyze the game: $$A = \begin{bmatrix} -1 & 1 \\ 1 & -1 \end{bmatrix}$$ 
+
+1. **Security Strategy**
+    - for row player $P_1$, $J_U := \min_{j}\max_{k} a_{jk}$
+      $$
+      \begin{aligned}
+      &\max_{k} a_{1k} = 1 \quad (k=2),\\
+      &\max_{k} a_{2k} = 1 \quad (k=1),\\
+      \Rightarrow\; &J_U = \min\{1,1\}=1.
+      \end{aligned}
+      $$
+      $P_1$'s security strategy: $j^*\in\{1,2\}$ with upper value $J_U =1$
+
+    - for column player $P_2$, $J_L := \max_{k} \min_{j} a_{jk}$
+      $$
+      \begin{aligned}
+      &\min_{j} a_{j1} = -1 \quad (j=1),\\
+      &\min_{j} a_{j2} = -1 \quad (j=2),\\
+      \Rightarrow\; &J_L = \max\{-1,-1\}=-1.
+      \end{aligned}
+      $$
+      $P_2$'s security strategy: $k^*\in\{1,2\}$ with lower value $J_L =-1$
+
+      Since $J_L=-1<J_U=1$, **no saddle point** exists in pure strategies. All four combinations of security strategies form minimax pairs, but none of them is a saddle point solution. 
+      
+      This is in accordance with what we discussed about minimax solutions: **security strategies can be too conservative to be equilibria**.
+      
+2. **Regret Check for Equilibrium**
+
+    To illustrate that minimax solutions aren't necessarily equilibria, let's check if players would regret their choices after observing opponent's action.
+
+    From security strategies:
+    - $j^*=\arg\min_{j}\{1,1\}\;\Rightarrow\; j^*\in\{1,2\}$
+    - $k^*=\arg\max_{k}\{-1,-1\}\;\Rightarrow\; k^*\in\{1,2\}$
+
+    Therefore, the security strategy pairs: $$\{(1,1),(1,2),(2,1),(2,2)\}$$
+
+    **Check a candidate:** $(j^*,k^*)=(1,2)$
+
+    - **$P_1$ regrets.** Given $P_2$ plays $k=2$, $P_1$ checks column 2:
+      $$a_{12}=1 > a_{22}=-1$$
+      $P_1$ could reduce cost from 1 to -1 by switching to row 2. 
+      **Regret exists.**
+
+    - **$P_2$ no regret.** Given $P_1$ plays $j=1$, $P_2$ checks row 1:
+      $$a_{11}=-1 < a_{12}=1$$
+      $P_2$ already maximizes $P_1$'s cost at column 2.
+      **No regret.**
+
+    Since $P_1$ has regret, $(1,2)$ is not an equilibrium.
+
+In this example, we can observe
+
+1. **Security strategies:** Both players have security strategies.
+2. **Minimax pairs:** Any combination of security strategies $(j^*,k^*)$ forms a minimax (security) pair, but none is an equilibrium.  
+3. **Saddle point:** None exists in pure strategies since no entry satisfies  
+
+   $$a_{j^*k} \le a_{j^*k^*} \le a_{jk^*}\ \qquad \forall j,k$$
+
+### 2.2 Mixed-Strategy
+
+#### 2.2.1 Mixed-Strategy Extension
+> **Question:** What if we want to solve for the equilibrium when no pure-strategy equilibrium exists?
+
+💡 Aha! We introduce **randomization** over actions by replacing one-hot pure action vectors with **probability distributions** over the action sets.
+
+**Notation**
+- $x_j=\Pr(P_1 \text{ selects action } j)$, and $P_1$’s mixed strategy is
   $$
-  J_L \le a_{j^* k^*} \le J_U
+  x=[x_1,\ldots,x_{m_1}]^\top\in\mathbb R^{m_1}.
+  $$
+- $y_k=\Pr(P_2 \text{ selects action } k)$, and $P_2$’s mixed strategy is
+  $$
+  y=[y_1,\ldots,y_{m_2}]^\top\in\mathbb R^{m_2}.
   $$
 
-
-
-### Definition 2.2
-
-Given $A_{m \times n} = [a_{jk}]$:
-
-If
-
+For valid probability distributions, we require
 $$
-a_{j^* k} \;\le\; a_{j^* k^*} \;\le\; a_{j k^*}, 
-\quad \forall j \in M_1, \; \forall k \in M_2
+x\in\Delta_{1}:=\{\,x\in\mathbb R^{m_1}\mid x_j\ge 0,\ \sum_{j=1}^{m_1}x_j=1\,\},
+$$
+$$
+y\in\Delta_{2}:=\{\,y\in\mathbb R^{m_2}\mid y_k\ge 0,\ \sum_{k=1}^{m_2}y_k=1\,\}.
 $$
 
-then $(j^*, k^*)$ is a **saddle-point equilibrium**.
+We sometimes denote $\Delta_X = \Delta_1 \times \Delta_2$ as the joint strategy space. (from the lecture note)
 
-### Course Note
+**Pure Strategies as Special Cases**
 
-* Last time
-* Today
-* Recap:
+Pure strategies are special cases of mixed strategies. Any mixed strategy is some **convex combination** of these pure strategies. When a player selects action $j$ with probability $1$, the mixed strategy **degenerates to a pure strategy**:
 
-* For player 1: $|\Omega_1| = m_1, \; M_1 = \{1, \dots, m\}$
+- $P_1$: $x=\mathbf e_{1j}=[0,\ldots,1,\ldots,0]^\top$ ($1$ in $j$-th action)
+- $P_2$: $y=\mathbf e_{2k}=[0,\ldots,1,\ldots,0]^\top$ ($1$ in $k$-th action) 
 
-  $$
-  e_{1j} =
-  \begin{bmatrix}
-  0 \\ \vdots \\ 1 \\ \vdots \\ 0
-  \end{bmatrix}
-  \quad \text{(j-th unit vector)}
-  $$
+In geometry, they are the **vertices (extreme points)** of the probability simplex.
 
-  Action: $\vec{u}_1 = e_{1j}$.
+| **2D Example:** $P_1$ has 2 actions | **3D Example:** $P_1$ has 3 actions |
+|:---:|:---:|
+| $$\Delta_1 = \left\{\, x \in \mathbb{R}^2 \mid \begin{array}{l} 0 \le x_j \le 1, \  \\ \forall\ j = 1,2 \end{array} \,\sum_j x_j = 1\right\}$$ | $$\Delta_1 = \left\{\, x \in \mathbb{R}^3 \mid \begin{array}{l} 0 \le x_j \le 1, \  \\ \forall\ j = 1,2,3 \end{array} \,\sum_j x_j = 1\right\}$$ |
+| <img src="../images/simplex_R2.png" alt="2D Simplex" width="70%"> | <img src="../images/simplex_R3.png" alt="3D Simplex" width="70%"> |
 
-  $$
-  \min_{\vec{u}_1} J_1(\vec{u}_1, \vec{u}_2), \quad \vec{u}_1 = e_{1j}
-  $$
+**Expected Cost**
 
-* For player 2: $|\Omega_2| = m_2, \; M_2 = \{1, \dots, n\}$
+When players use mixed strategies, the game outcome becomes probabilistic. The expected cost is computed by summing over all possible outcomes, weighted by their probabilities:
 
-  $$
-  e_{2k} =
-  \begin{bmatrix}
-  0 \\ \vdots \\ 1 \\ \vdots \\ 0
-  \end{bmatrix}
-  \quad \text{(k-th unit vector)}
-  $$
+$$\begin{aligned}
+\bar{J}(x,y) &= \mathbb{E}[J] \\
+&= \sum_{j=1}^{m_1}\sum_{k=1}^{m_2} \text{(cost of outcome $(j,k)$)} \times \Pr(\text{outcome $(j,k)$ occurs}) \\
+&= \sum_{j=1}^{m_1}\sum_{k=1}^{m_2}\ a_{jk} \cdot \ \ x_j \cdot y_k \\
+&= \sum_{j=1}^{m_1} x_j \left(\sum_{k=1}^{m_2} a_{jk} \cdot y_k \right) \\
+&= x^T A y
+\end{aligned}$$
 
-  Action: $\vec{u}_2 = e_{2k}$.
+Properties of $\bar{J}(x,y) = x^T A y$:
 
-  $$
-  \min_{\vec{u}_2} J_2(\vec{u}_1, \vec{u}_2), \quad \vec{u}_2 = e_{2k}
-  $$
+1. **Maps mixed strategy profiles to expected costs:**
+   $$\bar{J}: \Delta_1 \times \Delta_2 \to \mathbb{R}$$
 
-### Two-Player Zero-Sum (2PZS)
+2. **Is the kernel of the game:** 
+   - $P_1$: $\min_{x \in \Delta_1} \bar{J}(x,y)$
+   - $P_2$: $\max_{y \in \Delta_2} \bar{J}(x,y)$
 
-$$
-J_1 + J_2 = 0 
-\quad \Leftrightarrow \quad \text{use single cost function } J
-$$
+3. **Preserves key properties:**
+   - Bilinearity: Linear in each variable separately
+   - Zero-sum: $\bar{J}_1(x,y) + \bar{J}_2(x,y) = 0$
+   - Recovery: $\bar{J}(e_{1j}, e_{2k}) = a_{jk}$ for pure strategies
 
-* P1: $\min \max J$
-* P2: $\max \min J$
+**Mixed strategy 2PZSG**
 
+With **mixed strategies** and **expected cost** defined, we can extend the game notation:
+- **Pure strategy game**: $$\mathcal{G}(\mathcal{N}, \Omega, J)$$ where players choose deterministic actions
+- **Mixed strategy game**: $$\mathcal{G}(\mathcal{N}, \Delta_X, \bar{J})$$ where players choose probability distributions over actions
 
+#### 2.2.2 Mixed Security Strategies
 
+Next we are defining the security strategy for mixed strategy games.
 
-### Finite Action
+| | $P_1$ | $P_2$ |
+|:---:|:---:|:---:|
+| **Security Strategy** | $$x^* \in \arg\min_{x \in \Delta_1} \max_{y \in \Delta_2} x^T A y$$ | $$y^* \in \arg\max_{y \in \Delta_2} \min_{x \in \Delta_1} x^T A y$$ |
+| **Security Level** | $$\bar{J}_U = \min_{x \in \Delta_1} \max_{y \in \Delta_2} x^T A y$$ (upper value) | $$\bar{J}_L = \max_{y \in \Delta_2} \min_{x \in \Delta_1} x^T A y$$ (lower value) |
 
-$$
-(j,k) \;\;\Rightarrow\;\; J(e_{1j}, e_{2k}) = a_{jk} = e_{1j}^T A e_{2k}, 
-\quad a_{jk} \in \mathbb{R}.
-$$
+By extending to mixed strategies, we have:
+$$J_L \leq \bar{J}_L \leq \bar{J}_U \leq J_U$$
 
+Allowing mixed strategies enlarges each player’s feasible set, so the maximizer’s guaranteed **floor** weakly rises $$J_L \le \bar J_L$$ 
+while the minimizer’s worst-case **ceiling** weakly falls  $$\bar J_U \le J_U$$
 
-### Definitions
+Therefore, the uncertainty interval shrinks from $[J_L,\,J_U]$ to $[\bar J_L,\,\bar J_U]$, which in finite zero-sum games collapses to a single value by minimax ($\bar J_L=\bar J_U$).
 
-* **P1 security strategy**
+#### 2.2.3 Mixed-strategy saddle-point equilibrium
 
-  $$
-  j^* = \arg\min_j \max_k a_{jk} 
-  \quad \Rightarrow \quad J_U \ne J_L \;\; \text{in general.}
-  $$
-
-* **Minimax solution**
-  Both players use security strategies → $(j^*, k^*) \mapsto J_\phi$.
-
-
-### Note
-
-$*$ No regret property may **not hold** → see Example 1 & Example 2.
-
-
-### Definition — Saddle Point
-
-If
+For a 2-player zero-sum matrix game with cost matrix $A=[a_{jk}]$, a pair 
+$(x^*,y^*)\in\Delta_1\times\Delta_2$ is a **saddle-point equilibrium in mixed strategies** if
 
 $$
-a_{j^* k} \;\le\; a_{j^* k^*} \;\le\; a_{j k^*}, 
-\quad \forall k \in M_2, \;\forall j \in M_1,
+x^{*\top}Ay \;\le\; x^{*\top}Ay^* \;\le\; x^{\top}Ay^*
+\qquad
+\left\{
+\begin{array}{l}
+\forall\,x\in\Delta_1,\\[2pt]
+\forall\,y\in\Delta_2
+\end{array}\right.
 $$
-
-then:
-
-* no regret for P2 (blue)
-* no regret for P1 (green)
-
-
-### Additional Note
-
-A **minimax solution** is a saddle point **when**
-
+The common value 
 $$
-J_U = J_L = \bar{J}.
+\bar J := x^{*\top} A y^*
 $$
+is called the **saddle-point value** or the **value of the game in mixed strategies**.
 
+**Properties:**
+- Existence: always exists in finite 2P zero-sum games (by the Minimax Theorem).  
+- Value: unique and equal to $\bar J = \bar J_U = \bar J_L$.  
+- Strategies: equilibrium strategies $(x^*,y^*)$ may not be unique.  
+- Stability: no player can unilaterally improve their outcome (no-regret condition).  
 
+### 2.3 Minimax Theorem (von Neumann)
 
-
-### Example 3: Matching Pennies (MP) game
-
-$$
-A = 
-\begin{bmatrix}
--1 & 1 \\
-1 & -1
-\end{bmatrix}
-$$
-
-
-1. **Find security strategy** — *the problem*:
+Minimax says that once we allow probability distributions (mixed strategies), a saddle-point equilibrium always exists in a 2-player zero-sum game:
 
 $$
-j^* = \arg\min_j \max\{1,1\} \;\;\Rightarrow\;\; j^* = 1 \;\;\downarrow
+\min_{x \in \Delta_1} \max_{y \in \Delta_2} x^\top A y
+= 
+\max_{y \in \Delta_2} \min_{x \in \Delta_1} x^\top A y.
 $$
 
-$$
-k^* = \arg\max_k \min\{-1,-1\} \;\;\Rightarrow\;\; k^* = 1 \;\;\downarrow
-$$
+#### 2.3.1 Establishing Bounds via Separating Hyperplane
 
-So there are 4 “security strategy solutions” (minimax solutions):
+To prove this, assume there exists a gap between the two values. The idea is to construct bounds:
 
-$$
-(1,1),\; (1,2),\; (2,1),\; (2,2)
-$$
+- $P_1$ (minimizer) provides an upper bound
+- $P_2$ (maximizer) a lower bound. 
 
+This mirrors the separating hyperplane idea, formalized by Lemma 2.9.
 
-### Question:
+> **Lemma 2.9 Separating Hyperplane**
+>
+> Let any arbitrary $m \times n$ matrix $Q$. Then either (i) or (ii) below must hold:
+> 
+> (i) $\;\exists\, y_0 \in \Delta_2$ such that
+> $$x^\top Q y_0 \leq 0, \quad \forall x \in \Delta_1$$
+> 
+> (ii) $\;\exists\, x_0 \in \Delta_1$ such that
+> $$x_0^\top Q y \geq 0, \quad \forall y \in \Delta_2$$
+>
+> **Interpretation:** for any matrix $Q$, either 
+> there exists a mixed strategy $y_0$ for $P_2$ that makes $P_1$’s payoff negative, or there exists a mixed strategy $x_0$ for $P_1$ that guarantees positive payoff (but not both).
 
-Which one has **no regret** (saddle point)?
+So in order to apply Lemma 2.9, we should create a shifted utility game where the "zero level" has been moved by $c$.
+Therefore we construct a matrix 
+$$Q = -A + c\mathbf{1}_{m_1 \times m_2}$$
 
-* Pick $(j^*,k^*)=(1,2)$:
-  → P1 regrets, P2 regrets → ✗ not saddle pt. sol.
+**(i):** If $\exists\ y_0$ such that $x^\top Q y_0 \leq 0,\quad \forall x \in \Delta_1$:
+$$\begin{aligned}
+&x^\top(-A + c\mathbf{1}_{m_1\times m_2})y_0 \leq 0 \\
+\Rightarrow \ &-x^\top A y_0 + c \leq 0 \\
+\Rightarrow \ &x^\top A y_0 \geq c
+\end{aligned}$$
 
-* Pick $(j^*,k^*)=(1,2)$:
-  → P1 regrets, P2 regrets → ✗ not saddle pt. sol.
+Since this holds for all $x \in \Delta_1$, we can take the minimum over $x$:
+$$\min_{x \in \Delta_1} x^\top A y_0 \geq c$$
 
-(*all regret → no pure saddle point here*)
+Now, $y_0$ is one specific mixed strategy in $\Delta_2$ that achieves $\min_x x^\top A y_0 \geq c$.
 
+The maximum over all possible $y \in \Delta_2$ must be at least as large as what $y_0$ achieves:
+$$J_L = \max_{y \in \Delta_2} \min_{x \in \Delta_1} x^\top A y \geq \min_{x \in \Delta_1} x^\top A y_0 \geq c$$
 
-### Question:
+Therefore: $$J_L \geq c$$
 
-What to do in such cases?
+**(ii):** If $\exists\ x_0$ such that $x_0^\top Q y \geq 0,\quad \forall y \in \Delta_2$:
+$$\begin{aligned}
+&x_0^\top(-A + c\mathbf{1}_{m_1\times m_2})y \geq 0 \\
+\Rightarrow \ &-x_0^\top A y + c \geq 0 \\
+\Rightarrow \ &x_0^\top A y \leq c \quad \forall y \in \Delta_2
+\end{aligned}$$
 
-👉 Introduce **randomization** in selection of actions.
+Since this holds for all $y \in \Delta_2$, we can take the maximum over $y$:
+$$\max_{y \in \Delta_2} x_0^\top A y \leq c$$
 
-* This defines the **mixed strategy** of P1 and P2.
+Now, $x_0$ is one specific mixed strategy in $\Delta_1$ that achieves $\max_y x_0^\top A y \leq c$.
 
+The minimum over all possible $x \in \Delta_1$ must be at most as large as what $x_0$ achieves:
+$$J_U = \min_{x \in \Delta_1} \max_{y \in \Delta_2} x^\top A y \leq \max_{y \in \Delta_2} x_0^\top A y \leq c$$
 
-* Denote:
+Therefore: $$J_U \leq c$$
 
-  $$
-  x_j = \Pr(\text{P1 selects j-th action}), 
-  \quad x = [x_1, \dots, x_j, \dots, x_{m_1}]^T \in \mathbb{R}^{m_1}
-  $$
+Thus Lemma 2.9 ensures either the $J_L\geq c$ or $J_U\leq c$.
 
-  $$
-  y_k = \Pr(\text{P2 selects k-th action}), 
-  \quad y = [y_1, \dots, y_k, \dots, y_{m_2}]^T \in \mathbb{R}^{m_2}
-  $$
+#### 2.3.2 Eliminating the Gap by Contradiction
 
-* Require:
+Let $J_L = \max_y \min_x x^\top A y$ and $J_U = \min_x \max_y x^\top A y$.
 
-  $$
-  0 \le x_j \le 1, \quad \sum_j x_j = 1
-  $$
+Assume $J_U > J_L$ (i.e., there exists a gap $k = J_U - J_L > 0$).
 
-  $$
-  0 \le y_k \le 1, \quad \sum_k y_k = 1
-  $$
+Choose $c = \frac{J_L + J_U}{2}$ (the midpoint).
 
-  so that $x,y$ are valid probability vectors.
+By Lemma 2.9, either case (i) or case (ii) must hold:
+- If (i) holds: $J_L \geq c = \frac{J_L + J_U}{2} = J_L + \frac{k}{2}$, which implies $0 \geq \frac{k}{2}$ — contradiction!
+- If (ii) holds: $J_U \leq c = \frac{J_L + J_U}{2} = J_U - \frac{k}{2}$, which implies $0 \leq -\frac{k}{2}$ — contradiction!
 
+Since both cases lead to contradictions, our assumption that $J_U > J_L$ must be false.
 
-### Note
+Therefore:
+$$\min_x \max_y x^\top A y = \max_y \min_x x^\top A y$$
 
-* If P1 selects $j$-th action with 100% probability:
+The Minimax Theorem is proved. 
 
-  $$
-  x = e_{1j} = [0, \dots, 1, \dots, 0]^T
-  $$
+### 2.4: Computing Mixed Saddle-Point Equilibrium Solution
 
-  → P1’s **pure strategy**.
+#### 2.4.1 Dominated Strategies 
 
+> TODO: summerise 2.4.1
 
+The core idea is that you can remove strictly dominated rows/columns when computing Mixed-Strategy Equilibria
 
+#### 2.4.2 Graphical Solution
+> Appears in 3 out of 4 problems in problem set 2
 
+**Geometric intuition:**
 
-### Q: Where do $x$ and $y$ live?
+$P_1$ aims to minimize worst-case cost:
+$$\min_{\mathbf{x}\in\Delta_1}\left\{\max_{\mathbf{y}\in\Delta_2}\bar{J}(\mathbf{x},\mathbf{y})\right\}$$
 
-**(2D Example):** P1 has **2 actions** to choose from
+The strategy space $\Delta_2$ is a convex polytope with vertices $\{\mathbf{e}_2^1, \ldots, \mathbf{e}_2^{m_2}\}$. Any mixed strategy $\mathbf{y}$ is a convex combination of these vertices.
 
-$$
-\Delta_1 := \left\{ x = 
-\begin{bmatrix} x_1 \\ x_2 \end{bmatrix} \in \mathbb{R}^2 \;\middle|\; 0 \le x_j \le 1,\; \sum_j x_j = 1 \right\}
-$$
+<img src="../images/simplex_R3_minimal.png" alt="3D Simplex" width="70%">
 
-→ the **simplex** in $\mathbb{R}^2$ (a line segment).
+**Simplification:**
 
+For fixed $\mathbf{x}$, the cost $\overline{J}(\mathbf{x}, \mathbf{y}) = \mathbf{x}^T A \mathbf{y}$ is linear in $\mathbf{y}$. Linear functions over convex polytopes achieve their maximum at vertices:
 
-**(3D Example):** P1 has **3 actions** to choose from
+$$\max_{\mathbf{y} \in \Delta_2} \overline{J}(\mathbf{x}, \mathbf{y}) = \max_{k \in M_2} \mathbf{x}^T A \mathbf{e}_2^k$$
 
-$$
-\Delta_1 := \left\{ x = 
-\begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix} \in \mathbb{R}^3 \;\middle|\; 0 \le x_j \le 1,\; \sum_{j=1}^3 x_j = 1 \right\}
-$$
+Therefore, $P_1$'s security strategy becomes:
+$$\mathbf{x}^* = \arg\min_{\mathbf{x} \in \Delta_1} \max_{k \in M_2} \mathbf{x}^T A \mathbf{e}_2^k$$
 
-→ the **simplex** in $\mathbb{R}^3$ (a triangle).
+For $2 \times n$ games, use $x_1 + x_2 = 1$ to parameterize $\mathbf{x} = [x_1, 1-x_1]^T$ with $x_1 \in [0,1]$.
 
-(Diagrams show the line segment for 2 actions and triangle for 3 actions.)
+Expected cost against $\mathbf{e}_2^k$:
+$$R_k(x_1) = a_{1k}x_1 + a_{2k}(1-x_1) = (a_{1k} - a_{2k})x_1 + a_{2k}$$
 
+Security level:
+$$V_1(x_1) = \max_{k=1,...,n} R_k(x_1)$$
 
-### Expected outcome (value of the cost)
+This is piecewise-linear (maximum of $n$ lines) and convex. The optimal $x_1^*$ minimizes $V_1(x_1)$.
 
-When P1 selects $j$: probability $x_j$
-When P2 selects $k$: probability $y_k$
+**Example: Matching Pennies**
 
-Outcome:
+For $A = \begin{bmatrix} -1 & 1 \\ 1 & -1 \end{bmatrix}$:
 
-$$
-a_{jk} x_j y_k
-$$
+Compute response lines:
+$$\begin{aligned}
+R_1(x_1) &= (-1 - 1)x_1 + 1 = -2x_1 + 1 \\
+R_2(x_1) &= (1 - (-1))x_1 + (-1) = 2x_1 - 1
+\end{aligned}$$
 
-Expected cost:
+Find intersection:
+$$-2x_1^* + 1 = 2x_1^* - 1 \implies 4x_1^* = 2 \implies x_1^* = \frac{1}{2}$$
 
-$$
-\mathbb{E}[J] = \sum_{j=1}^{m_1} \sum_{k=1}^{m_2} a_{jk} x_j y_k
-$$
+<img src="../images/matching_pennies_graphical.png" alt="Matching Pennies Graphical Solution" width="80%">
 
-In compact form:
+Therefore $\mathbf{x}^* = [1/2, 1/2]^T$. By symmetry, $\mathbf{y}^* = [1/2, 1/2]^T$ with $\overline{J}^* = 0$.
 
-$$
-\mathbb{E}[J] = x^T A y
-$$
 
-(This encompasses the pure strategy case.)
+#### 2.4.3 Linear Programming Formulation
 
+> TODO: summerise 2.4.3
 
-### Mixed Strategy Problem Formulation
-
-* Player 1 (minimizer):
-
-  $$
-  \min_{x \in \Delta_1} x^T A y
-  $$
-
-* Player 2 (maximizer):
-
-  $$
-  \max_{y \in \Delta_2} x^T A y
-  $$
-
-
-### Definition — Mixed Strategy Security
-
-* P1 has a mixed strategy $x^*$:
-
-  $$
-  x^* = \arg\min_{x \in \Delta_1} \max_{y \in \Delta_2} x^T A y, 
-  \quad \text{expected cost } \bar{J}_U
-  $$
-
-* P2 has a mixed strategy $y^*$:
-
-  $$
-  y^* = \arg\max_{y \in \Delta_2} \min_{x \in \Delta_1} x^T A y, 
-  \quad \text{expected cost } \bar{J}_L
-  $$
-
-Here’s the cleaned-up extraction of your manuscript across these two overlapping pages:
-
-
-### Definition — Mixed Strategy Saddle-Point Equilibrium
-
-A pair $(x^*, y^*) \in \Delta_1 \times \Delta_2$ is a **mixed strategy saddle-point equilibrium** if
-
-$$
-x^T A y^* \;\le\; x^{*T} A y^* \;\le\; x^{*T} A y, 
-\quad \forall x \in \Delta_1, \; \forall y \in \Delta_2.
-$$
-
-* Note: $\bar{J}_U = \bar{J}_L = x^{*T} A y^*$.
-* Equivalently: $(x^*, y^*)$ is a **mixed strategy security solution** and a **saddle point** in any 2-player zero-sum finite game.
-* → This is the **Minimax Theorem**.
-
-
-### Computation of Mixed Strategy Saddle-Point Equilibrium
-
-* Graphically for $m = 2, n = 2$ games (2×2).
-* Note: extendable to $m \times n$ games.
-
-Take matrix:
-
-$$
-A = \begin{bmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{bmatrix}.
-$$
-
-
-#### Simplex definitions
-
-* For P1:
-
-$$
-\Delta_1 = \left\{ x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} \in \mathbb{R}^2 \;\middle|\; 0 \le x_j \le 1, \; x_1+x_2=1 \right\}
-$$
-
-* For P2:
-
-$$
-\Delta_2 = \left\{ y = \begin{bmatrix} y_1 \\ y_2 \end{bmatrix} \in \mathbb{R}^2 \;\middle|\; 0 \le y_k \le 1, \; y_1+y_2=1 \right\}
-$$
-
-
-#### Player 1’s computation
-
-P1 looks at:
-
-$$
-\min_{x \in \Delta_1} \max_{k \in \{1,2\}} x^T A e_{2k}.
-$$
-
-That is:
-
-$$
-\min_{x_1 \in [0,1]} \max \Big\{ x_1 a_{11} + (1-x_1)a_{21}, \;\; x_1 a_{12} + (1-x_1)a_{22} \Big\}.
-$$
-
-Define:
-
-* $R_1(x_1) = x_1 a_{11} + (1-x_1)a_{21}$
-* $R_2(x_1) = x_1 a_{12} + (1-x_1)a_{22}$
-
-Both are linear functions of $x_1$.
-Let:
-
-$$
-Q(x_1) = \max\{R_1(x_1), R_2(x_1)\}.
-$$
-
-Then:
-
-$$
-x_1^* = \arg\min_{x_1 \in [0,1]} Q(x_1).
-$$
-
-
-### Example: Matching Pennies
-
-$$
-A = \begin{bmatrix} -1 & 1 \\ 1 & -1 \end{bmatrix}.
-$$
-
-Compute:
-
-$$
-R_1(x_1) = -2x_1 + 1, 
-\quad R_2(x_1) = 2x_1 - 1.
-$$
-
-At equilibrium:
-
-$$
-x_1^* = \tfrac{1}{2}, \quad x_2^* = 1-x_1^* = \tfrac{1}{2}.
-$$
-
-So:
-
-$$
-x^* = \begin{bmatrix} \tfrac{1}{2} \\ \tfrac{1}{2} \end{bmatrix}, 
-\quad \bar{J} = 0.
-$$
-
-Similarly for P2:
-
-$$
-y^* = \begin{bmatrix} \tfrac{1}{2} \\ \tfrac{1}{2} \end{bmatrix}.
-$$
+### Reference
+- Pavel, L. (2025). *Game Theory and Evolutionary Games*. Systems Control Group, Department of Electrical and Computer Engineering, University of Toronto.
+- https://en.wikipedia.org/wiki/Minimax_theorem

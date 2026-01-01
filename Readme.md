@@ -1,22 +1,25 @@
-# ECE1657: Game Theory and Evolutionary Games 
+# ECE1657: Game Theory and Evolutionary Games (Fall 2025)
 
-Course notes and implementations for ECE1657: Game Theory and Evolutionary Games (Fall 2025)
+Coursework repo: lecture notes, assignments, and final-project artifacts.  
+Status: notes in progress (6/11 lectures); project code cleanup pending.
 
-> Work in progress. Feedback welcome via issues or pull requests.
+## Project result (quick glance)
 
-## Contents
+| Proposed (Bayesian game-theoretic planner) | Baseline (freezing / reactive stop) |
+|---|---|
+| ![Proposed](images/proposed.gif) | ![Baseline](images/baseline.gif) |
 
-- **`/notes`** - Chapter summaries with mathematical formulations
-- **`/images`** - Diagrams and visual aids
-- **`/code`** - [Coming soon] Python implementations
-- **`/projects`** - [Coming soon] Course projects
+## Repository layout
+
+- `notes/` — Lecture notes (progress: 6/11)
+- `assignments/` — Problem sets + related concept notes
+- `images/` — Figures and result media
+- `projects/` — Final-project code (coming soon)
 
 ## Usage
 
-These materials are shared for educational purposes. Feel free to use with attribution.
+Educational use allowed with attribution.
 
 ## Acknowledgments
 
-Based on lectures by Prof. Lacra Pavel, Systems Control Group, ECE Department, University of Toronto.
-
-
+Based on lectures by Prof. Lacra Pavel (Systems Control Group, ECE, University of Toronto).
